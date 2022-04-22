@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
+import { Routes as Switch, Route, Navigate } from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { Footer, Navbar, Results } from './components'
+
+const App = () => {
+    const [darkTheme, setDarkTheme] = useState(false)
+
+    return (
+        <div className={darkTheme ? 'dark' : ''}>
+            <div className="bg-gray-100 min-h-screen dark:bg-gray-900 dark:text-gray-200">
+                <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme} />
+                <div className="p-4">
+                    <Switch>
+                        <Route path="/" element={<Navigate to="/search" />} />
+                        {['/search', '/image', '/news', '/video'].map(
+                            (path) => (
+                                <Route
+                                    key={path}
+                                    path={path}
+                                    element={<Results />}
+                                />
+                            )
+                        )}
+                    </Switch>
+                </div>
+                <Footer />
+            </div>
+        </div>
+    )
 }
 
-export default App;
+export default App
